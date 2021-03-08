@@ -1,9 +1,12 @@
 from flask_wtf import FlaskForm
+from wtforms import BooleanField
+from wtforms import IntegerField
 from wtforms import StringField
 from wtforms import SubmitField
 from wtforms import validators
 
 from bpgen.factorio.blueprint import Blueprint
+from bpgen.factorio.cityblock import CityBlock
 from bpgen.factorio.entity import generate_combinator_text
 
 
@@ -31,6 +34,15 @@ class CityBlockForm(Tab):
     tab_name = "City block"
     tab_id = "cityblock"
 
-    in_count = StringField('In count', [validators.DataRequired()])
-    out_count = StringField('Out count', [validators.DataRequired()])
+    in_count = IntegerField('In count', [validators.DataRequired()], default=1)
+    out_count = IntegerField('Out count', [validators.DataRequired()], default=1)
+    landfill = BooleanField('With landfill tiles (preview and copy buttons not working)', default=False)
     submit = SubmitField('Generate')
+
+    def generate(self):
+        cb = CityBlock('factorio/cityblock.json')
+
+        if self.landfill.data:
+            cb.add_landfill()
+
+        return cb.get_encoded()
