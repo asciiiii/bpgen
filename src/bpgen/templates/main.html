@@ -59,7 +59,7 @@
                             <hr>
                             <p>
                                 <button type="button" class="btn btn-default" onclick="copyToClipboard()">Copy</button>
-                                <a href="{{ tab.result.preview_url }}" target="_blank">Preview on FBE</a>
+                                <button type="button" class="btn btn-default" onclick="window.open('{{ tab.result.preview_url }}', '_blank')">Preview</button>
                             </p>
                             <pre id="result">{{ tab.result.blueprint }}</pre>
                         {% endif %}
