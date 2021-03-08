@@ -1,4 +1,6 @@
+# Sensitive data
 /Makefile.variable
+
 /venv
 
 # IntelliJ
