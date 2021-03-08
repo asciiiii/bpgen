@@ -1,3 +1,6 @@
+import os
+import pathlib
+
 from flask_wtf import FlaskForm
 from wtforms import BooleanField
 from wtforms import IntegerField
@@ -40,7 +43,8 @@ class CityBlockForm(Tab):
     submit = SubmitField('Generate')
 
     def generate(self):
-        cb = CityBlock('factorio/cityblock.json')
+        path = pathlib.Path(__file__).parent.absolute()
+        cb = CityBlock(os.path.join(path, 'factorio', 'cityblock.json'))
 
         if self.landfill.data:
             cb.add_landfill()
