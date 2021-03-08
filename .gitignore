@@ -1,0 +1,6 @@
+/Makefile.variable
+/venv
+
+# IntelliJ
+/.idea
+/*.iml

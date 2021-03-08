@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  httpd:
+    build: .
+    image: bpgen/httpd:latest
+    ports:
+      - 8123:5000
