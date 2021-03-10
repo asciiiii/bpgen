@@ -1,0 +1,68 @@
+{% from 'bootstrap/nav.html' import render_nav_item, render_breadcrumb_item %}
+
+<!doctype html>
+<html lang="en">
+    <head>
+        {% block head %}
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+            {% block styles %}
+                {{ bootstrap.load_css() }}
+            {% endblock %}
+
+            <title>Blueprint</title>
+        {% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="navbar-nav mr-auto">
+                    {{ render_nav_item('combtext', 'Combinator text') }}
+                    {{ render_nav_item('cityblock', 'City block') }}
+                </div>
+            </div>
+        </nav>
+
+        <main class="container">
+            <form>
+                {% block content %}
+                {% endblock %}
+
+                <input class="btn btn-primary btn-md" type="submit" value="Generate">
+            </form>
+
+            {% if result | length %}
+                <hr>
+                <p>
+                    <button type="button" class="btn btn-primary btn-md" onclick="copyToClipboard()">Copy</button>
+                    <button type="button" class="btn btn-primary btn-md" onclick="window.open('{{ result.preview_url }}', '_blank')">Preview</button>
+                    <br/>Copy/preview buttons may not work if blueprint is too big.
+                </p>
+                <pre><code id="result">{{ result.blueprint }}</code></pre>
+            {% endif %}
+
+            {% block scripts %}
+                {{ bootstrap.load_js() }}
+
+                <script>
+                    function copyToClipboard() {
+                        // Can't copy from pre tag directly
+                        const textArea = document.createElement('textarea');
+                        textArea.textContent = document.getElementById("result").textContent;
+                        document.body.append(textArea);
+
+                        textArea.select();
+                        document.execCommand("copy");
+
+                        textArea.remove();
+                    }
+                </script>
+            {% endblock %}
+        </main>
+    </body>
+</html>

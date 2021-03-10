@@ -1,45 +1,76 @@
 #!bin/python
 
 import os
+import pathlib
 
 from flask import Flask
 from flask import render_template
 from flask import request
 from flask_bootstrap import Bootstrap
+from werkzeug.utils import redirect
 
+from bpgen.factorio.blueprint import Blueprint
+from bpgen.factorio.cityblock import CityBlock
+from bpgen.factorio.entity import generate_combinator_text
 from bpgen.forms import CityBlockForm
 from bpgen.forms import CombinatorTextForm
 
-DEBUG = False
+DEBUG = True
 BLUEPRINT_PREVIEW_URL = 'https://fbe.teoxoy.com/?source='
 
 app = Flask(__name__)
-app.config.from_mapping(SECRET_KEY=os.urandom(32))
-Bootstrap(app)
+app.config['WTF_CSRF_ENABLED'] = False
+bootstrap = Bootstrap(app)
 
 
-@app.route('/', methods=['GET', 'POST'])
-def main():
-    tabs = [
-        CombinatorTextForm(request.form),
-        CityBlockForm(request.form),
-    ]
+def build_result(blueprint):
+    encoded = blueprint.get_encoded()
+    return {
+        'blueprint': encoded,
+        'preview_url': BLUEPRINT_PREVIEW_URL + encoded,
+    }
 
-    if request.method == 'POST':
-        for tab in tabs:
-            if not tab.submit.data:
-                continue
 
-            if not tab.validate_on_submit():
-                continue
+@app.route('/')
+def start():
+    return redirect("/combtext", code=302)
 
-            result = tab.generate()
-            tab.result = {
-                'blueprint': result,
-                'preview_url': BLUEPRINT_PREVIEW_URL + result,
-            }
 
-    return render_template('main.html', title="ascii's blueprint generator", tabs=tabs)
+@app.route('/combtext')
+def combtext():
+    form = CombinatorTextForm(request.args)
+
+    template_args = {
+        'form': form,
+    }
+
+    if form.validate():
+        blueprint = Blueprint()
+        entities = generate_combinator_text(form.first_line.data, form.second_line.data)
+        blueprint.entities.extend(entities)
+        template_args['result'] = build_result(blueprint)
+
+    return render_template('combtext.html', **template_args)
+
+
+@app.route('/cityblock')
+def cityblock():
+    form = CityBlockForm(request.args)
+
+    template_args = {
+        'form': form,
+    }
+
+    if form.validate():
+        path = pathlib.Path(__file__).parent.absolute()
+        blueprint = CityBlock(os.path.join(path, 'factorio', 'cityblock.json'))
+
+        if form.landfill.data:
+            blueprint.add_landfill()
+
+        template_args['result'] = build_result(blueprint)
+
+    return render_template('cityblock.html', **template_args)
 
 
 if __name__ == '__main__':
