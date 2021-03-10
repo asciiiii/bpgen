@@ -1,8 +1,5 @@
 #!bin/python
 
-import os
-import pathlib
-
 from flask import Flask
 from flask import render_template
 from flask import request
@@ -44,7 +41,7 @@ def combtext():
         'form': form,
     }
 
-    if form.validate():
+    if request.args and form.validate():
         blueprint = Blueprint()
         entities = generate_combinator_text(form.first_line.data, form.second_line.data)
         blueprint.entities.extend(entities)
@@ -61,9 +58,8 @@ def cityblock():
         'form': form,
     }
 
-    if form.validate():
-        path = pathlib.Path(__file__).parent.absolute()
-        blueprint = CityBlock(os.path.join(path, 'factorio', 'cityblock.json'))
+    if request.args and form.validate():
+        blueprint = CityBlock('cityblock')
 
         if form.landfill.data:
             blueprint.add_landfill()

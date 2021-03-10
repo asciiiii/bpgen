@@ -1,12 +1,21 @@
 import base64
 import json
+import os
+import pathlib
 import zlib
 
 
 class CityBlock:
-    def __init__(self, base_path):
-        with open(base_path) as f:
-            self.data = json.load(f)
+    def __init__(self, name):
+        path = pathlib.Path(__file__).parent.absolute()
+        path = os.path.join(path, 'blueprints', name + '.blueprint')
+
+        with open(path) as f:
+            b64 = f.read()[1:]
+
+        gz = base64.b64decode(b64)
+        data = zlib.decompress(gz)
+        self.data = json.loads(data)
 
     def get_encoded(self):
         j = json.dumps(self.data)

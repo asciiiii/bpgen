@@ -13,15 +13,10 @@ class CombinatorTextForm(FlaskForm):
     second_line = StringField()
 
 
-class NonValidatingSelectField(SelectField):
-    def pre_validate(self, form):
-        pass
-
-
 class CityBlockIOForm(FlaskForm):
     used = BooleanField(default=False)
-    type = NonValidatingSelectField(choices=["Solid", "Liquid"])
-    resource = NonValidatingSelectField(choices=SIGNALS.keys())
+    type = SelectField(choices=["Solid", "Liquid"])
+    resource = SelectField(choices=SIGNALS.keys())
 
 
 class CityBlockForm(FlaskForm):
