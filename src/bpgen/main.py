@@ -11,6 +11,7 @@ from bpgen.factorio.cityblock import CityBlock
 from bpgen.factorio.entity import generate_combinator_text
 from bpgen.forms import CityBlockForm
 from bpgen.forms import CombinatorTextForm
+from bpgen.forms import TrainForm
 
 DEBUG = True
 BLUEPRINT_PREVIEW_URL = 'https://fbe.teoxoy.com/?source='
@@ -33,6 +34,28 @@ def start():
     return redirect("/combtext", code=302)
 
 
+@app.route('/train')
+def train():
+    form = TrainForm(request.args)
+
+    template_args = {
+        'form': form,
+    }
+
+    if request.args and form.validate():
+        blueprint = CityBlock('train')
+
+        for station in blueprint.data['blueprint']['schedules'][0]['schedule']:
+            if station['station'] == '[item=iron-ore]OUT':
+                station['station'] = '[item={}] OUT'.format(form.resource.data)
+            elif station['station'] == '[item=iron-ore]IN':
+                station['station'] = '[item={}] IN'.format(form.resource.data)
+
+        template_args['result'] = build_result(blueprint)
+
+    return render_template('autoform.html', **template_args)
+
+
 @app.route('/combtext')
 def combtext():
     form = CombinatorTextForm(request.args)
@@ -47,7 +70,7 @@ def combtext():
         blueprint.entities.extend(entities)
         template_args['result'] = build_result(blueprint)
 
-    return render_template('combtext.html', **template_args)
+    return render_template('autoform.html', **template_args)
 
 
 @app.route('/cityblock')
@@ -60,6 +83,11 @@ def cityblock():
 
     if request.args and form.validate():
         blueprint = CityBlock('cityblock')
+
+        for i in range(1, 2):
+            g = CityBlock('station_load_solid')
+            blueprint.add_entities(g.data['blueprint']['entities'], i)
+            print(i)
 
         if form.landfill.data:
             blueprint.add_landfill()

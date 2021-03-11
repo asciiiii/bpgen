@@ -13,13 +13,12 @@ class CombinatorTextForm(FlaskForm):
     second_line = StringField()
 
 
-class CityBlockIOForm(FlaskForm):
-    used = BooleanField(default=False)
-    type = SelectField(choices=["Solid", "Liquid"])
-    resource = SelectField(choices=SIGNALS.keys())
-
-
 class CityBlockForm(FlaskForm):
+    class CityBlockIOForm(FlaskForm):
+        used = BooleanField(default=False)
+        type = SelectField(choices=["Solid", "Liquid"])
+        resource = SelectField(choices=SIGNALS.keys())
+
     in1 = FormField(CityBlockIOForm)
     in2 = FormField(CityBlockIOForm)
     in3 = FormField(CityBlockIOForm)
@@ -27,6 +26,7 @@ class CityBlockForm(FlaskForm):
     in5 = FormField(CityBlockIOForm)
     in6 = FormField(CityBlockIOForm)
     in7 = FormField(CityBlockIOForm)
+
     out1 = FormField(CityBlockIOForm)
     out2 = FormField(CityBlockIOForm)
     out3 = FormField(CityBlockIOForm)
@@ -36,3 +36,7 @@ class CityBlockForm(FlaskForm):
     out7 = FormField(CityBlockIOForm)
 
     landfill = BooleanField('With landfill tiles', default=False)
+
+
+class TrainForm(FlaskForm):
+    resource = SelectField(choices=SIGNALS.keys())
