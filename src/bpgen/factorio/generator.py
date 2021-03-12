@@ -31,6 +31,12 @@ class SignalsGenerator:
 
                     self.item_signals.append(name)
 
+        with open(os.path.join(DATA_PATH, 'fluid.lua')) as f:
+            for line in f.readlines():
+                if 'name' in line:
+                    name = self._get_name_lua_line(line)
+                    self.item_signals.append(name)
+
         with open(os.path.join(DATA_PATH, 'signal.lua')) as f:
             for line in f.readlines()[1:]:
                 if 'name' in line:

@@ -43,6 +43,7 @@ SIGNAL_COPPER_CABLE = ItemSignal("copper-cable")
 SIGNAL_COPPER_ORE = ItemSignal("copper-ore")
 SIGNAL_COPPER_PLATE = ItemSignal("copper-plate")
 SIGNAL_COPY_PASTE_TOOL = ItemSignal("copy-paste-tool")
+SIGNAL_CRUDE_OIL = ItemSignal("crude-oil")
 SIGNAL_CUT_PASTE_TOOL = ItemSignal("cut-paste-tool")
 SIGNAL_DECIDER_COMBINATOR = ItemSignal("decider-combinator")
 SIGNAL_DECONSTRUCTION_PLANNER = ItemSignal("deconstruction-planner")
@@ -95,6 +96,7 @@ SIGNAL_HEAT_EXCHANGER = ItemSignal("heat-exchanger")
 SIGNAL_HEAT_INTERFACE = ItemSignal("heat-interface")
 SIGNAL_HEAT_PIPE = ItemSignal("heat-pipe")
 SIGNAL_HEAVY_ARMOR = ItemSignal("heavy-armor")
+SIGNAL_HEAVY_OIL = ItemSignal("heavy-oil")
 SIGNAL_INFINITY_CHEST = ItemSignal("infinity-chest")
 SIGNAL_INFINITY_PIPE = ItemSignal("infinity-pipe")
 SIGNAL_INSERTER = ItemSignal("inserter")
@@ -111,6 +113,7 @@ SIGNAL_LAND_MINE = ItemSignal("land-mine")
 SIGNAL_LANDFILL = ItemSignal("landfill")
 SIGNAL_LASER_TURRET = ItemSignal("laser-turret")
 SIGNAL_LIGHT_ARMOR = ItemSignal("light-armor")
+SIGNAL_LIGHT_OIL = ItemSignal("light-oil")
 SIGNAL_LINKED_BELT = ItemSignal("linked-belt")
 SIGNAL_LINKED_CHEST = ItemSignal("linked-chest")
 SIGNAL_LOCOMOTIVE = ItemSignal("locomotive")
@@ -123,6 +126,7 @@ SIGNAL_LOGISTIC_ROBOT = ItemSignal("logistic-robot")
 SIGNAL_LOGISTIC_SCIENCE_PACK = ItemSignal("logistic-science-pack")
 SIGNAL_LONG_HANDED_INSERTER = ItemSignal("long-handed-inserter")
 SIGNAL_LOW_DENSITY_STRUCTURE = ItemSignal("low-density-structure")
+SIGNAL_LUBRICANT = ItemSignal("lubricant")
 SIGNAL_MEDIUM_ELECTRIC_POLE = ItemSignal("medium-electric-pole")
 SIGNAL_MILITARY_SCIENCE_PACK = ItemSignal("military-science-pack")
 SIGNAL_MODULAR_ARMOR = ItemSignal("modular-armor")
@@ -134,6 +138,7 @@ SIGNAL_OIL_REFINERY = ItemSignal("oil-refinery")
 SIGNAL_PERSONAL_LASER_DEFENSE_EQUIPMENT = ItemSignal("personal-laser-defense-equipment")
 SIGNAL_PERSONAL_ROBOPORT_EQUIPMENT = ItemSignal("personal-roboport-equipment")
 SIGNAL_PERSONAL_ROBOPORT_MK2_EQUIPMENT = ItemSignal("personal-roboport-mk2-equipment")
+SIGNAL_PETROLEUM_GAS = ItemSignal("petroleum-gas")
 SIGNAL_PIERCING_ROUNDS_MAGAZINE = ItemSignal("piercing-rounds-magazine")
 SIGNAL_PIERCING_SHOTGUN_SHELL = ItemSignal("piercing-shotgun-shell")
 SIGNAL_PIPE = ItemSignal("pipe")
@@ -194,6 +199,7 @@ SIGNAL_SPIDERTRON_ROCKET_LAUNCHER_4 = ItemSignal("spidertron-rocket-launcher-4")
 SIGNAL_SPLITTER = ItemSignal("splitter")
 SIGNAL_STACK_FILTER_INSERTER = ItemSignal("stack-filter-inserter")
 SIGNAL_STACK_INSERTER = ItemSignal("stack-inserter")
+SIGNAL_STEAM = ItemSignal("steam")
 SIGNAL_STEAM_ENGINE = ItemSignal("steam-engine")
 SIGNAL_STEAM_TURBINE = ItemSignal("steam-turbine")
 SIGNAL_STEEL_CHEST = ItemSignal("steel-chest")
@@ -207,6 +213,7 @@ SIGNAL_STORAGE_TANK = ItemSignal("storage-tank")
 SIGNAL_SUBMACHINE_GUN = ItemSignal("submachine-gun")
 SIGNAL_SUBSTATION = ItemSignal("substation")
 SIGNAL_SULFUR = ItemSignal("sulfur")
+SIGNAL_SULFURIC_ACID = ItemSignal("sulfuric-acid")
 SIGNAL_TANK = ItemSignal("tank")
 SIGNAL_TANK_CANNON = ItemSignal("tank-cannon")
 SIGNAL_TANK_FLAMETHROWER = ItemSignal("tank-flamethrower")
@@ -224,6 +231,7 @@ SIGNAL_URANIUM_ROUNDS_MAGAZINE = ItemSignal("uranium-rounds-magazine")
 SIGNAL_USED_UP_URANIUM_FUEL_CELL = ItemSignal("used-up-uranium-fuel-cell")
 SIGNAL_UTILITY_SCIENCE_PACK = ItemSignal("utility-science-pack")
 SIGNAL_VEHICLE_MACHINE_GUN = ItemSignal("vehicle-machine-gun")
+SIGNAL_WATER = ItemSignal("water")
 SIGNAL_WOOD = ItemSignal("wood")
 SIGNAL_WOODEN_CHEST = ItemSignal("wooden-chest")
 
@@ -323,6 +331,7 @@ SIGNALS = {
     "copper-ore": SIGNAL_COPPER_ORE,
     "copper-plate": SIGNAL_COPPER_PLATE,
     "copy-paste-tool": SIGNAL_COPY_PASTE_TOOL,
+    "crude-oil": SIGNAL_CRUDE_OIL,
     "cut-paste-tool": SIGNAL_CUT_PASTE_TOOL,
     "decider-combinator": SIGNAL_DECIDER_COMBINATOR,
     "deconstruction-planner": SIGNAL_DECONSTRUCTION_PLANNER,
@@ -375,6 +384,7 @@ SIGNALS = {
     "heat-interface": SIGNAL_HEAT_INTERFACE,
     "heat-pipe": SIGNAL_HEAT_PIPE,
     "heavy-armor": SIGNAL_HEAVY_ARMOR,
+    "heavy-oil": SIGNAL_HEAVY_OIL,
     "infinity-chest": SIGNAL_INFINITY_CHEST,
     "infinity-pipe": SIGNAL_INFINITY_PIPE,
     "inserter": SIGNAL_INSERTER,
@@ -391,6 +401,7 @@ SIGNALS = {
     "landfill": SIGNAL_LANDFILL,
     "laser-turret": SIGNAL_LASER_TURRET,
     "light-armor": SIGNAL_LIGHT_ARMOR,
+    "light-oil": SIGNAL_LIGHT_OIL,
     "linked-belt": SIGNAL_LINKED_BELT,
     "linked-chest": SIGNAL_LINKED_CHEST,
     "locomotive": SIGNAL_LOCOMOTIVE,
@@ -403,6 +414,7 @@ SIGNALS = {
     "logistic-science-pack": SIGNAL_LOGISTIC_SCIENCE_PACK,
     "long-handed-inserter": SIGNAL_LONG_HANDED_INSERTER,
     "low-density-structure": SIGNAL_LOW_DENSITY_STRUCTURE,
+    "lubricant": SIGNAL_LUBRICANT,
     "medium-electric-pole": SIGNAL_MEDIUM_ELECTRIC_POLE,
     "military-science-pack": SIGNAL_MILITARY_SCIENCE_PACK,
     "modular-armor": SIGNAL_MODULAR_ARMOR,
@@ -414,6 +426,7 @@ SIGNALS = {
     "personal-laser-defense-equipment": SIGNAL_PERSONAL_LASER_DEFENSE_EQUIPMENT,
     "personal-roboport-equipment": SIGNAL_PERSONAL_ROBOPORT_EQUIPMENT,
     "personal-roboport-mk2-equipment": SIGNAL_PERSONAL_ROBOPORT_MK2_EQUIPMENT,
+    "petroleum-gas": SIGNAL_PETROLEUM_GAS,
     "piercing-rounds-magazine": SIGNAL_PIERCING_ROUNDS_MAGAZINE,
     "piercing-shotgun-shell": SIGNAL_PIERCING_SHOTGUN_SHELL,
     "pipe": SIGNAL_PIPE,
@@ -474,6 +487,7 @@ SIGNALS = {
     "splitter": SIGNAL_SPLITTER,
     "stack-filter-inserter": SIGNAL_STACK_FILTER_INSERTER,
     "stack-inserter": SIGNAL_STACK_INSERTER,
+    "steam": SIGNAL_STEAM,
     "steam-engine": SIGNAL_STEAM_ENGINE,
     "steam-turbine": SIGNAL_STEAM_TURBINE,
     "steel-chest": SIGNAL_STEEL_CHEST,
@@ -487,6 +501,7 @@ SIGNALS = {
     "submachine-gun": SIGNAL_SUBMACHINE_GUN,
     "substation": SIGNAL_SUBSTATION,
     "sulfur": SIGNAL_SULFUR,
+    "sulfuric-acid": SIGNAL_SULFURIC_ACID,
     "tank": SIGNAL_TANK,
     "tank-cannon": SIGNAL_TANK_CANNON,
     "tank-flamethrower": SIGNAL_TANK_FLAMETHROWER,
@@ -504,6 +519,7 @@ SIGNALS = {
     "used-up-uranium-fuel-cell": SIGNAL_USED_UP_URANIUM_FUEL_CELL,
     "utility-science-pack": SIGNAL_UTILITY_SCIENCE_PACK,
     "vehicle-machine-gun": SIGNAL_VEHICLE_MACHINE_GUN,
+    "water": SIGNAL_WATER,
     "wood": SIGNAL_WOOD,
     "wooden-chest": SIGNAL_WOODEN_CHEST,
     "signal-everything": SIGNAL_EVERYTHING,
