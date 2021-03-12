@@ -8,6 +8,7 @@ from werkzeug.utils import redirect
 
 from bpgen.factorio.blueprint import Blueprint
 from bpgen.factorio.cityblock import CityBlock
+from bpgen.factorio.cityblock import replace_item
 from bpgen.factorio.entity import generate_combinator_text
 from bpgen.forms import CityBlockForm
 from bpgen.forms import CombinatorTextForm
@@ -73,6 +74,17 @@ def combtext():
     return render_template('autoform.html', **template_args)
 
 
+def cccc(blueprint, form, out, pos):
+    if not form.used.data:
+        return
+
+    station = CityBlock('station_{}_{}'.format('out' if out else 'in', form.type.data.lower()))
+    station.data['blueprint'] = replace_item(station.data['blueprint'], 'name', {'wood': form.resource.data})
+    station.data['blueprint'] = replace_item(station.data['blueprint'], 'station', {'[item=wood] IN': '[item={}] IN'.format(form.resource.data)})
+    station.data['blueprint'] = replace_item(station.data['blueprint'], 'station', {'[item=wood] OUT': '[item={}] OUT'.format(form.resource.data)})
+    blueprint.add_entities(station.data['blueprint']['entities'], pos, out)
+
+
 @app.route('/cityblock')
 def cityblock():
     form = CityBlockForm(request.args)
@@ -84,10 +96,21 @@ def cityblock():
     if request.args and form.validate():
         blueprint = CityBlock('cityblock')
 
-        for i in range(1, 2):
-            g = CityBlock('station_load_solid')
-            blueprint.add_entities(g.data['blueprint']['entities'], i)
-            print(i)
+        cccc(blueprint, form.in1.form, False, 1)
+        cccc(blueprint, form.in2.form, False, 2)
+        cccc(blueprint, form.in3.form, False, 3)
+        cccc(blueprint, form.in4.form, False, 4)
+        cccc(blueprint, form.in5.form, False, 5)
+        cccc(blueprint, form.in6.form, False, 6)
+        cccc(blueprint, form.in7.form, False, 7)
+
+        cccc(blueprint, form.out1.form, True, 1)
+        cccc(blueprint, form.out2.form, True, 2)
+        cccc(blueprint, form.out3.form, True, 3)
+        cccc(blueprint, form.out4.form, True, 4)
+        cccc(blueprint, form.out5.form, True, 5)
+        cccc(blueprint, form.out6.form, True, 6)
+        cccc(blueprint, form.out7.form, True, 7)
 
         if form.landfill.data:
             blueprint.add_landfill()

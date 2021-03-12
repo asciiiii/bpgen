@@ -5,15 +5,17 @@ import pathlib
 import zlib
 
 
-def replace_item(obj, key, replace_value):
+def replace_item(obj, key, value_mapping):
     for k, v in obj.items():
         if isinstance(v, dict):
-            obj[k] = replace_item(v, key, replace_value)
+            obj[k] = replace_item(v, key, value_mapping)
         elif isinstance(v, list):
-            obj[k] = [replace_item(e, key, replace_value) for e in v]
+            if isinstance(v[0], dict):
+                obj[k] = [replace_item(e, key, value_mapping) for e in v]
 
     if key in obj:
-        obj[key] = replace_value[obj[key]]
+        if obj[key] in value_mapping:
+            obj[key] = value_mapping[obj[key]]
 
     return obj
 
@@ -41,14 +43,18 @@ class CityBlock:
     def get_next_id(self):
         return self.get_last_id() + 1
 
-    def add_entities(self, entities, o):
+    def add_entities(self, entities, o, out=True):
         id_map = {}
         for entity in entities:
             old_id = entity['entity_number']
             entity['entity_number'] = self.get_next_id()
             id_map[old_id] = entity['entity_number']
 
-            entity['position']['x'] += (32 * 6) - (12 * o)
+            if out:
+                entity['position']['x'] += (32 * 6) - (12 * o)
+            else:
+                entity['position']['x'] += (32 * 1) + (12 * (o - 1))
+
             entity['position']['y'] += 18
             self.data['blueprint']['entities'].append(entity)
 
