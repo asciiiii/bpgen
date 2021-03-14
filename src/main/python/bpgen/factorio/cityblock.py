@@ -51,9 +51,9 @@ class CityBlock:
             id_map[old_id] = entity['entity_number']
 
             if out:
-                entity['position']['x'] += (32 * 6) - (12 * o)
+                entity['position']['x'] += (32 * 6) - (10 * o) - 2
             else:
-                entity['position']['x'] += (32 * 1) + (12 * (o - 1))
+                entity['position']['x'] += (32 * 1) + (10 * (o - 1))
 
             entity['position']['y'] += 18
             self.data['blueprint']['entities'].append(entity)

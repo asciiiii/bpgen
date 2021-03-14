@@ -50,17 +50,15 @@ def train():
     if request.args and form.validate():
         blueprint = CityBlock('train')
 
-        type_ = 'item' if form.type.data.lower() == 'solid' else 'fluid'
-
-        if form.type.data.lower() == 'liquid':
+        if form.type.data == 'fluid':
             for entity in blueprint.data['blueprint']['entities']:
                 entity = replace_item(entity, 'name', {'cargo-wagon': 'fluid-wagon'})
 
         for station in blueprint.data['blueprint']['schedules'][0]['schedule']:
             if station['station'] == '[item=iron-ore]OUT':
-                station['station'] = '[{}={}] OUT'.format(type_, form.resource.data)
+                station['station'] = '[{}={}] OUT'.format(form.type.data, form.resource.data)
             elif station['station'] == '[item=iron-ore]IN':
-                station['station'] = '[{}={}] IN'.format(type_, form.resource.data)
+                station['station'] = '[{}={}] IN'.format(form.type.data, form.resource.data)
 
         template_args['result'] = build_result(blueprint)
 
@@ -88,16 +86,15 @@ def cccc(blueprint, form, out, pos):
     if not form.used.data:
         return
 
-    station = CityBlock('station_{}_{}'.format('out' if out else 'in', form.type.data.lower()))
-    type_ = 'item' if form.type.data.lower() == 'solid' else 'fluid'
+    station = CityBlock('station_{}_{}'.format('out' if out else 'in', form.type.data))
     station.data['blueprint'] = replace_item(station.data['blueprint'], 'name', {'wood': form.resource.data})
 
-    if form.type.data.lower() == 'liquid':
+    if form.type.data.lower() == 'fluid':
         for entity in station.data['blueprint']['entities']:
             entity = replace_item(entity, 'type', {'item': 'fluid'})
 
-    station.data['blueprint'] = replace_item(station.data['blueprint'], 'station', {'[item=wood] IN': '[{}={}] IN'.format(type_, form.resource.data)})
-    station.data['blueprint'] = replace_item(station.data['blueprint'], 'station', {'[item=wood] OUT': '[{}={}] OUT'.format(type_, form.resource.data)})
+    station.data['blueprint'] = replace_item(station.data['blueprint'], 'station', {'[item=wood] IN': '[{}={}] IN'.format(form.type.data, form.resource.data)})
+    station.data['blueprint'] = replace_item(station.data['blueprint'], 'station', {'[item=wood] OUT': '[{}={}] OUT'.format(form.type.data, form.resource.data)})
     blueprint.add_entities(station.data['blueprint']['entities'], pos, out)
 
 
@@ -139,12 +136,18 @@ def cityblock():
 def move_exported_blueprints():
     path = os.path.expanduser('~/.factorio/script-output/')
 
-    dst = pathlib.Path(__file__).parent.absolute()
-    dst = os.path.join(dst, 'blueprints')
+    dst = os.path.join(
+        pathlib.Path(__file__).parent.absolute(),
+        'factorio',
+        'blueprints',
+    )
 
     for file in glob.glob(path + '*.blueprint'):
-        print(file, dst)
-        shutil.copy(file, dst)
+        print('moving file:', file)
+        shutil.move(
+            file,
+            os.path.join(dst, os.path.basename(file))
+        )
 
 
 if __name__ == '__main__':

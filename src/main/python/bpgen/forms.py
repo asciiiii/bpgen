@@ -16,7 +16,7 @@ class CombinatorTextForm(FlaskForm):
 class CityBlockForm(FlaskForm):
     class CityBlockIOForm(FlaskForm):
         used = BooleanField(default=False)
-        type = SelectField(choices=["Solid", "Liquid"])
+        type = SelectField(choices=["item", "fluid"])
         resource = SelectField(choices=SIGNALS.keys())
 
     in1 = FormField(CityBlockIOForm)
@@ -39,5 +39,5 @@ class CityBlockForm(FlaskForm):
 
 
 class TrainForm(FlaskForm):
-    type = SelectField(choices=["Solid", "Liquid"])
+    type = SelectField(choices=["item", "fluid"])
     resource = SelectField(choices=SIGNALS.keys())
