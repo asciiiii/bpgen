@@ -39,4 +39,5 @@ class CityBlockForm(FlaskForm):
 
 
 class TrainForm(FlaskForm):
+    type = SelectField(choices=["Solid", "Liquid"])
     resource = SelectField(choices=SIGNALS.keys())

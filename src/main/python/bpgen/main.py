@@ -1,4 +1,9 @@
 #!bin/python
+import argparse
+import glob
+import os
+import pathlib
+import shutil
 
 from flask import Flask
 from flask import render_template
@@ -14,7 +19,6 @@ from bpgen.forms import CityBlockForm
 from bpgen.forms import CombinatorTextForm
 from bpgen.forms import TrainForm
 
-DEBUG = True
 BLUEPRINT_PREVIEW_URL = 'https://fbe.teoxoy.com/?source='
 
 app = Flask(__name__)
@@ -32,7 +36,7 @@ def build_result(blueprint):
 
 @app.route('/')
 def start():
-    return redirect("/combtext", code=302)
+    return redirect("/cityblock", code=302)
 
 
 @app.route('/train')
@@ -46,11 +50,17 @@ def train():
     if request.args and form.validate():
         blueprint = CityBlock('train')
 
+        type_ = 'item' if form.type.data.lower() == 'solid' else 'fluid'
+
+        if form.type.data.lower() == 'liquid':
+            for entity in blueprint.data['blueprint']['entities']:
+                entity = replace_item(entity, 'name', {'cargo-wagon': 'fluid-wagon'})
+
         for station in blueprint.data['blueprint']['schedules'][0]['schedule']:
             if station['station'] == '[item=iron-ore]OUT':
-                station['station'] = '[item={}] OUT'.format(form.resource.data)
+                station['station'] = '[{}={}] OUT'.format(type_, form.resource.data)
             elif station['station'] == '[item=iron-ore]IN':
-                station['station'] = '[item={}] IN'.format(form.resource.data)
+                station['station'] = '[{}={}] IN'.format(type_, form.resource.data)
 
         template_args['result'] = build_result(blueprint)
 
@@ -79,9 +89,15 @@ def cccc(blueprint, form, out, pos):
         return
 
     station = CityBlock('station_{}_{}'.format('out' if out else 'in', form.type.data.lower()))
+    type_ = 'item' if form.type.data.lower() == 'solid' else 'fluid'
     station.data['blueprint'] = replace_item(station.data['blueprint'], 'name', {'wood': form.resource.data})
-    station.data['blueprint'] = replace_item(station.data['blueprint'], 'station', {'[item=wood] IN': '[item={}] IN'.format(form.resource.data)})
-    station.data['blueprint'] = replace_item(station.data['blueprint'], 'station', {'[item=wood] OUT': '[item={}] OUT'.format(form.resource.data)})
+
+    if form.type.data.lower() == 'liquid':
+        for entity in station.data['blueprint']['entities']:
+            entity = replace_item(entity, 'type', {'item': 'fluid'})
+
+    station.data['blueprint'] = replace_item(station.data['blueprint'], 'station', {'[item=wood] IN': '[{}={}] IN'.format(type_, form.resource.data)})
+    station.data['blueprint'] = replace_item(station.data['blueprint'], 'station', {'[item=wood] OUT': '[{}={}] OUT'.format(type_, form.resource.data)})
     blueprint.add_entities(station.data['blueprint']['entities'], pos, out)
 
 
@@ -120,12 +136,28 @@ def cityblock():
     return render_template('cityblock.html', **template_args)
 
 
+def move_exported_blueprints():
+    path = os.path.expanduser('~/.factorio/script-output/')
+
+    dst = pathlib.Path(__file__).parent.absolute()
+    dst = os.path.join(dst, 'blueprints')
+
+    for file in glob.glob(path + '*.blueprint'):
+        print(file, dst)
+        shutil.copy(file, dst)
+
+
 if __name__ == '__main__':
-    args = {}
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("--debug", action="store_true")
+    args = arg_parser.parse_args()
 
-    if DEBUG:
-        args['debug'] = DEBUG
+    flask_args = {}
+
+    if args.debug:
+        flask_args['debug'] = True
+        move_exported_blueprints()
     else:
-        args['host'] = '0.0.0.0'
+        flask_args['host'] = '0.0.0.0'
 
-    app.run(**args)
+    app.run(**flask_args)

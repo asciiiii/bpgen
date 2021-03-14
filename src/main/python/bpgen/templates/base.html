@@ -39,12 +39,12 @@
 
             {% if result | length %}
                 <hr>
+                <pre><code id="result">{{ result.blueprint }}</code></pre>
                 <p>
                     <button type="button" class="btn btn-primary btn-md" onclick="copyToClipboard()">Copy</button>
                     <button type="button" class="btn btn-primary btn-md" onclick="window.open('{{ result.preview_url }}', '_blank')">Preview</button>
                     <br/>Copy/preview buttons may not work if blueprint is too big or have unsupported entities (like train).
                 </p>
-                <pre><code id="result">{{ result.blueprint }}</code></pre>
             {% endif %}
 
             {% block scripts %}
@@ -52,7 +52,7 @@
 
                 <script>
                     function copyToClipboard() {
-                        // Can't copy from pre tag directly
+                        // Can't copy from code tag directly
                         const textArea = document.createElement('textarea');
                         textArea.textContent = document.getElementById("result").textContent;
                         document.body.append(textArea);
